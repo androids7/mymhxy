@@ -10,6 +10,12 @@ import wx.adv
 
 ver  = '1.0'
 defPwd='******'
+startx=0
+posx=0
+starty=0
+posy=0
+isZhuaGui = True
+
 
 #校验密码
 def CheckPwd():
@@ -52,10 +58,19 @@ def zhuaGuiTh(param):
     if frame.autoZhuaGui.LabelText =='自动带队抓鬼':
         frame.autoZhuaGui.LabelText='停止自动带队抓鬼'
         # 检查口令
-        if(CheckPwd() != True):
-            return False
+        # if(CheckPwd() != True):
+        #     return False
+        t = threading.Thread(target=zhuagui,args=(u'捉鬼',))
+        t.setDaemon(True)
+        t.start()
+
     else:
         frame.autoZhuaGui.LabelText='自动带队抓鬼'
+
+def zhuagui():
+    global isZhuaGui
+    
+
 
 class Frame(wx.Frame):
     def __init__(self, parent=None, id=wx.ID_ANY,title=u"梦幻手游辅助v"+ver,pos=wx.DefaultPosition,size=(500,400),style=wx.SYSTEM_MENU|wx.MINIMIZE_BOX|wx.CLOSE_BOX|wx.CAPTION):
@@ -66,7 +81,7 @@ class Frame(wx.Frame):
         self.tripText1 = wx.StaticText(panel,wx.ID_ANY,label=u'口令:',pos=(0, 15))
         self.tripText1.SetFont(wx.Font(11, wx.SWISS, wx.NORMAL, wx.NORMAL))
         self.doPwd= wx.TextCtrl(panel,wx.ID_ANY,pos=(40,10),size=(90,25))
-        self.doPwd.SetValue(defPwd);
+        self.doPwd.SetValue(defPwd)
         self.tripText2 = wx.StaticText(panel,wx.ID_ANY,label=u'--------------------------------------操作--------------------------------------------',pos=(0, 35))
         self.tripText2.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.NORMAL))
 
@@ -107,8 +122,13 @@ if __name__ == '__main__':
     
     # 配置大小
     wdname='《梦幻西游》手游'
-    #handle = win32gui.FindWindow(0, wdname)  # 获取窗口句柄
-    #rect=win32gui.GetWindowRect(handle)
+    handle = win32gui.FindWindow(0, wdname)  # 获取窗口句柄
+    win32gui.SetWindowPos(handle, win32con.HWND_TOPMOST, 0,0,0,0, win32con.SWP_NOMOVE | win32con.SWP_NOACTIVATE| win32con.SWP_NOOWNERZORDER|win32con.SWP_SHOWWINDOW)   
+    rect=win32gui.GetWindowRect(handle)
+    startx=rect[0]
+    starty=rect[1]
+    posx=rect[2]-rect[0]
+    posy=rect[3]-rect[1]
  
     app = wx.App()
     # 创建操作界面
