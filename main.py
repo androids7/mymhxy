@@ -7,6 +7,8 @@ import autopy
 import urllib.request 
 import wx
 import wx.adv
+from PIL import ImageGrab
+from image import OpenCVImageMatcher
 
 ver  = '1.0'
 defPwd='******'
@@ -57,6 +59,7 @@ def zhuaGuiTh(param):
     global frame
     if frame.autoZhuaGui.LabelText =='自动带队抓鬼':
         frame.autoZhuaGui.LabelText='停止自动带队抓鬼'
+        AddToList('自动带队抓鬼')
         # 检查口令
         # if(CheckPwd() != True):
         #     return False
@@ -66,6 +69,7 @@ def zhuaGuiTh(param):
 
     else:
         frame.autoZhuaGui.LabelText='自动带队抓鬼'
+        AddToList('停止自动带队抓鬼')
 
 def zhuagui():
     global isZhuaGui
@@ -87,11 +91,18 @@ class Frame(wx.Frame):
 
         self.oneKeyAutoDo = wx.Button(panel,wx.ID_ANY,label=u"一键自动任务",pos=(10,55),size=(110,35))
         self.autoZhuaGui  = wx.Button(panel,wx.ID_ANY,label=u"自动带队抓鬼",pos=(140,55),size=(110,35))
-        self.autoDaTu  = wx.Button(panel,wx.ID_ANY,label=u"自动宝图",pos=(270,55),size=(100,35))
+        self.autoDaTu  = wx.Button(panel,wx.ID_ANY,label=u"自动宝图",pos=(10,100),size=(110,35))
         # 控件事件
         self.Bind(wx.EVT_BUTTON, oneKeyDo, self.oneKeyAutoDo)
         self.Bind(wx.EVT_BUTTON, zhuaGuiTh, self.autoZhuaGui)
         self.Bind(wx.EVT_BUTTON, BaoTuTh, self.autoDaTu)
+
+        self.listbox1 = wx.ListBox(panel,wx.ID_ANY,(270,55),(200,300),[],wx.LB_SINGLE)
+
+def AddToList(strLine):
+    frame.listbox1.Append(time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())))
+    frame.listbox1.Append(strLine)
+    frame.listbox1.Append(" ")
 
 def OnClose(event):
     global frame
@@ -109,7 +120,11 @@ def closeMhxy():
         # 寄送的消息:win32con.WM_QUIT,加的消息特定的信息:0
         # 应该是关闭窗体
         win32api.PostMessage(mhwin, win32con.WM_QUIT, 0, 0)
- 
+
+def window_capture(rect):
+    img = ImageGrab.grab(bbox=rect)
+    return img
+
 if __name__ == '__main__':
     # 已经在运行的关闭窗体
     closeMhxy()
@@ -119,16 +134,6 @@ if __name__ == '__main__':
     except:
         win32api.MessageBox(0,u'启动失败,请检查网络')
         exit()
-    
-    # 配置大小
-    wdname='《梦幻西游》手游'
-    handle = win32gui.FindWindow(0, wdname)  # 获取窗口句柄
-    win32gui.SetWindowPos(handle, win32con.HWND_TOPMOST, 0,0,0,0, win32con.SWP_NOMOVE | win32con.SWP_NOACTIVATE| win32con.SWP_NOOWNERZORDER|win32con.SWP_SHOWWINDOW)   
-    rect=win32gui.GetWindowRect(handle)
-    startx=rect[0]
-    starty=rect[1]
-    posx=rect[2]-rect[0]
-    posy=rect[3]-rect[1]
  
     app = wx.App()
     # 创建操作界面
@@ -137,4 +142,19 @@ if __name__ == '__main__':
     frame.Bind(wx.EVT_CLOSE, OnClose)#主窗口绑定自身的关闭事件
     frame.Centre()
     frame.Show()
+
+   # 配置大小
+    wdname='《梦幻西游》手游'
+    handle = win32gui.FindWindow(0, wdname)  # 获取窗口句柄
+    if handle>0:
+        win32gui.SetWindowPos(handle, win32con.HWND_TOPMOST, 0,0,0,0, win32con.SWP_NOMOVE | win32con.SWP_NOACTIVATE| win32con.SWP_NOOWNERZORDER|win32con.SWP_SHOWWINDOW)   
+        rect=win32gui.GetWindowRect(handle)
+        startx=rect[0]
+        starty=rect[1]
+        posx=rect[2]-rect[0]
+        posy=rect[3]-rect[1]
+    else:
+        AddToList('游戏没有启动，请关闭软件重新打开！')
+
+    matcher=OpenCVImageMatcher()
     app.MainLoop()
