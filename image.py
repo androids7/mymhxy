@@ -2,10 +2,9 @@ import numpy as np
 import cv2
 class OpenCVImageMatcher(object):   
     # 全图进行配对
-    def match_sub_image(self, img_rgb ,imgfile):
+    def match_sub_image(self, cv_img ,imgfile):
         #加载原始RGB图像
-        cv_img = np.array(img_rgb)
-        img = cv2.cvtColor(cv_img, cv2.cv.CV_BGR2RGB)
+        img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
         #创建一个原始图像的灰度版本，所有操作在灰度版本中处理，然后在RGB图像中使用相同坐标还原
         img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -21,10 +20,15 @@ class OpenCVImageMatcher(object):
         #res大于70% 
         loc = np.where( res >= threshold)
         locs = zip(*loc[::-1])# 列表
-        if locs:
-            return (locs[0],locs[1],locs[0]+w,locs[1]+h)
-        else:
-            return None
+
+        for pt in locs:
+            if pt:
+                return getpoint(( pt[0], pt[1], pt[0]+w, pt[1]+h))
+                break
+        return None
+        
+def getpoint(rect):
+    return (rect[0]+(rect[2]-rect[0])/2,rect[1]+(rect[3]-rect[1])/2)
 
 """
 图像识别的两套方案

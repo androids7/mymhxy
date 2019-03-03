@@ -9,7 +9,7 @@ import wx
 import wx.adv
 from PIL import ImageGrab
 from image import OpenCVImageMatcher
-
+import numpy as np
 ver  = '1.0'
 defPwd='******'
 startx=0
@@ -17,7 +17,7 @@ posx=0
 starty=0
 posy=0
 isZhuaGui = True
-
+matcher=1
 
 #校验密码
 def CheckPwd():
@@ -49,10 +49,24 @@ def BaoTuTh(param):
     if frame.autoDaTu.LabelText =='自动宝图':
         frame.autoDaTu.LabelText='停止自动宝图'
         # 检查口令
-        if(CheckPwd() != True):
-            return False
+        # if(CheckPwd() != True):
+        #     return False
+        t = threading.Thread(target=baotu)
+        t.setDaemon(True)
+        t.start()
     else:
         frame.autoDaTu.LabelText='自动宝图'
+
+def baotu():
+    rect=matcher.match_sub_image(window_capture((startx,starty,startx+posx,starty+posy)),'./image/activity_label.png')
+    if rect:
+        print(rect)
+        autopy.mouse.smooth_move(rect)
+        time.sleep(1)
+        autopy.mouse.click()
+
+
+
  
 #抓鬼线程
 def zhuaGuiTh(param):
@@ -122,8 +136,10 @@ def closeMhxy():
         win32api.PostMessage(mhwin, win32con.WM_QUIT, 0, 0)
 
 def window_capture(rect):
-    img = ImageGrab.grab(bbox=rect)
-    return img
+    img_rgb = ImageGrab.grab(bbox=rect)
+    cv_img=np.array(img_rgb)
+    return cv_img
+
 
 if __name__ == '__main__':
     # 已经在运行的关闭窗体
