@@ -58,14 +58,18 @@ def BaoTuTh(param):
         frame.autoDaTu.LabelText='自动宝图'
 
 def baotu():
-    rect=matcher.match_sub_image(window_capture((startx,starty,startx+posx,starty+posy)),'./image/activity_label.png')
-    if rect:
-        print(rect)
-        autopy.mouse.smooth_move(rect)
-        time.sleep(1)
-        autopy.mouse.click()
-
-
+    # 打开活动页面
+    rect=matcher.match_sub_image(window_capture_all(),'./image/activity.png')
+    do(rect)
+    
+    # 点击宝图
+    rect1=matcher.match_sub_image(window_capture_all(),'./image/activity_baotu.png')
+    print(rect1)
+    rect1[0]=rect1[0]+327
+    do(rect1)
+    #接受宝图
+    # rect=matcher.match_sub_image(window_capture_all(),'./image/activity_baotu_start.png')
+    # do(rect)
 
  
 #抓鬼线程
@@ -137,9 +141,19 @@ def closeMhxy():
 
 def window_capture(rect):
     img_rgb = ImageGrab.grab(bbox=rect)
-    cv_img=np.array(img_rgb)
-    return cv_img
+    img_rgb.save('./test1.jpg','JPEG') #设置保存路径和图片格式
+    return './test1.jpg'
 
+def window_capture_all():
+    return window_capture((startx,starty,startx+posx,starty+posy))
+
+def do(rect):
+    if rect:
+        autopy.mouse.smooth_move(rect[0],rect[1])
+        time.sleep(1)
+        autopy.mouse.click()
+    else:
+        return
 
 if __name__ == '__main__':
     # 已经在运行的关闭窗体

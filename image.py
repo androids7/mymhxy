@@ -4,9 +4,9 @@ class OpenCVImageMatcher(object):
     # 全图进行配对
     def match_sub_image(self, cv_img ,imgfile):
         #加载原始RGB图像
-        img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+        img_rgb = cv2.imread(cv_img)
         #创建一个原始图像的灰度版本，所有操作在灰度版本中处理，然后在RGB图像中使用相同坐标还原
-        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
         #加载将要搜索的图像模板
         template = cv2.imread(imgfile, 0)
@@ -28,7 +28,7 @@ class OpenCVImageMatcher(object):
         return None
         
 def getpoint(rect):
-    return (rect[0]+(rect[2]-rect[0])/2,rect[1]+(rect[3]-rect[1])/2)
+    return [(int)(rect[0]+(rect[2]-rect[0])/2),(int)(rect[1]+(rect[3]-rect[1])/2)]
 
 """
 图像识别的两套方案
