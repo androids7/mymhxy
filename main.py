@@ -55,21 +55,77 @@ def BaoTuTh(param):
         t.setDaemon(True)
         t.start()
     else:
-        frame.autoDaTu.LabelText='自动宝图'
+        win32api.MessageBox(0,u'操作不允许')
 
 def baotu():
+    global frame
     # 打开活动页面
     rect=matcher.match_sub_image(window_capture_all(),'./image/activity.png')
-    do(rect)
-    
+    do(rect,'打开活动页面')
+    time.sleep(1)
     # 点击宝图
     rect1=matcher.match_sub_image(window_capture_all(),'./image/activity_baotu.png')
-    print(rect1)
-    rect1[0]=rect1[0]+327
-    do(rect1)
+    rect1[0]=rect1[0]+315
+    do(rect1,'点击宝图')
+    time.sleep(5)
     #接受宝图
-    # rect=matcher.match_sub_image(window_capture_all(),'./image/activity_baotu_start.png')
-    # do(rect)
+    rect=matcher.match_sub_image(window_capture_all(),'./image/activity_baotu_start.png')
+    do(rect,'接受宝图')
+    time.sleep(2)
+    # 打开收缩的任务视图
+    rect=matcher.match_sub_image(window_capture_all(),'./image/open_renwu.png')
+    do(rect,'打开收缩的任务视图')
+    time.sleep(1)
+    # 点击开始宝图
+    rect=matcher.match_sub_image(window_capture_all(),'./image/baotu_satrt.png')
+    do(rect,'点击开始宝图1')
+    do(rect,'点击开始宝图2')
+    time.sleep(1)
+    
+    count=0
+    while(True):
+        rect=matcher.match_sub_image(window_capture_all(),'./image/zhandou.png')
+        if rect:
+            count=0
+            AddToList('正在战斗')
+        else:
+            count+=1
+            time.sleep(10)
+            # 两分钟没有则完成宝图
+            if count>6:
+                do(rect,'完成宝图战斗')
+                count=0
+                break
+    
+    rect=matcher.match_sub_image(window_capture_all(),'./image/baogou.png')
+    do(rect,'打开包裹')
+    time.sleep(1)
+
+    rect=matcher.match_sub_image(window_capture_all(),'./image/baotu.png')
+    do(rect,'点击宝图')
+    time.sleep(1)
+
+    rect=matcher.match_sub_image(window_capture_all(),'./image/use.png')
+    do(rect,'点击使用')
+    time.sleep(1)
+
+    while(True):
+        rect=matcher.match_sub_image(window_capture_all(),'./image/baotu_use.png')
+        if rect:
+            count=0
+            rect[1]=rect[1]+60
+            do(rect,'点击开始挖宝')
+        else:
+            count+=1
+            time.sleep(10)
+            # 两分钟没有则完成宝图
+            if count>12:
+                do(rect,'完成挖图')
+                count=0
+                break
+
+    frame.autoDaTu.LabelText='自动宝图'
+
 
  
 #抓鬼线程
@@ -121,6 +177,7 @@ def AddToList(strLine):
     frame.listbox1.Append(time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())))
     frame.listbox1.Append(strLine)
     frame.listbox1.Append(" ")
+    frame.listbox1.SetSelection(frame.listbox1.GetCount()-1)
 
 def OnClose(event):
     global frame
@@ -147,12 +204,13 @@ def window_capture(rect):
 def window_capture_all():
     return window_capture((startx,starty,startx+posx,starty+posy))
 
-def do(rect):
+def do(rect,msg):
     if rect:
         autopy.mouse.smooth_move(rect[0],rect[1])
-        time.sleep(1)
         autopy.mouse.click()
+        AddToList(msg)
     else:
+        AddToList(msg+'--stop')
         return
 
 if __name__ == '__main__':
