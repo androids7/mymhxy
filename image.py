@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 class OpenCVImageMatcher(object):   
     # 全图进行配对
-    def match_sub_image(self, cv_img ,imgfile):
+    def match_sub_image(self, startx,starty,cv_img ,imgfile):
         #加载原始RGB图像
         img_rgb = cv2.imread(cv_img)
         #创建一个原始图像的灰度版本，所有操作在灰度版本中处理，然后在RGB图像中使用相同坐标还原
@@ -23,12 +23,12 @@ class OpenCVImageMatcher(object):
 
         for pt in locs:
             if pt:
-                return getpoint(( pt[0], pt[1], pt[0]+w, pt[1]+h))
+                return getpoint(( pt[0], pt[1], pt[0]+w, pt[1]+h),startx,starty,)
                 break
         return None
         
-def getpoint(rect):
-    return [(int)(rect[0]+(rect[2]-rect[0])/2),(int)(rect[1]+(rect[3]-rect[1])/2)]
+def getpoint(rect,startx,starty,):
+    return [(int)(rect[0]+(rect[2]-rect[0])/2+startx),(int)(rect[1]+(rect[3]-rect[1])/2)+starty]
 
 """
 图像识别的两套方案

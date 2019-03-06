@@ -60,31 +60,31 @@ def BaoTuTh(param):
 def baotu():
     global frame
     # 打开活动页面
-    rect=matcher.match_sub_image(window_capture_all(),'./image/activity.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/activity.png')
     do(rect,'打开活动页面')
     time.sleep(1)
     # 点击宝图
-    rect1=matcher.match_sub_image(window_capture_all(),'./image/activity_baotu.png')
+    rect1=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/activity_baotu.png')
     rect1[0]=rect1[0]+315
     do(rect1,'点击宝图')
     time.sleep(5)
     #接受宝图
-    rect=matcher.match_sub_image(window_capture_all(),'./image/activity_baotu_start.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/activity_baotu_start.png')
     do(rect,'接受宝图')
     time.sleep(2)
     # 打开收缩的任务视图
-    rect=matcher.match_sub_image(window_capture_all(),'./image/open_renwu.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/open_renwu.png')
     do(rect,'打开收缩的任务视图')
     time.sleep(1)
     # 点击开始宝图
-    rect=matcher.match_sub_image(window_capture_all(),'./image/baotu_satrt.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/baotu_satrt.png')
     do(rect,'点击开始宝图1')
     do(rect,'点击开始宝图2')
     time.sleep(1)
     
     count=0
     while(True):
-        rect=matcher.match_sub_image(window_capture_all(),'./image/zhandou.png')
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhandou.png')
         if rect:
             count=0
             AddToList('正在战斗')
@@ -97,20 +97,20 @@ def baotu():
                 count=0
                 break
     
-    rect=matcher.match_sub_image(window_capture_all(),'./image/baogou.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/baogou.png')
     do(rect,'打开包裹')
     time.sleep(1)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/baotu.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/baotu.png')
     do(rect,'点击宝图')
     time.sleep(1)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/use.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/use.png')
     do(rect,'点击使用')
     time.sleep(1)
 
     while(True):
-        rect=matcher.match_sub_image(window_capture_all(),'./image/baotu_use.png')
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/baotu_use.png')
         if rect:
             count=0
             rect[1]=rect[1]+60
@@ -149,38 +149,38 @@ def zhuagui():
     global isZhuaGui
 
     # 打开收缩的任务视图
-    rect=matcher.match_sub_image(window_capture_all(),'./image/open_renwu.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/open_renwu.png')
     do(rect,'打开收缩的任务视图')
     time.sleep(1)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/duiwu.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/duiwu.png')
     do(rect,'打开队伍视图1')
     do(rect,'打开队伍视图2')
     time.sleep(1)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/duiwu1.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/duiwu1.png')
     do(rect,'打开队伍视图3')
     do(rect,'打开队伍视图4')
     time.sleep(1)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/chungjiangduiwu.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/chungjiangduiwu.png')
     do(rect,'创建队伍')
     time.sleep(1)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/duiwuxuanze.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/duiwuxuanze.png')
     do(rect,'队伍选择')
     time.sleep(1)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/zhuoguirenwu.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguirenwu.png')
     do(rect,'选择捉鬼任务')
     time.sleep(1)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/zhuoguiqueding.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguiqueding.png')
     do(rect,'确定捉鬼任务')
     time.sleep(1)
 
     while True:
-        rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/zhuzhan.png')
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuzhan.png')
         if rect:
             AddToList('等待队伍人数')
             time.sleep(5)
@@ -188,25 +188,25 @@ def zhuagui():
             AddToList('队伍够人')
             break
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/guangbi.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/guangbi.png')
     do(rect,'关闭任务界面')
     time.sleep(1)
 
     # 打开活动页面
-    rect=matcher.match_sub_image(window_capture_all(),'./image/activity.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/activity.png')
     do(rect,'打开活动页面')
     time.sleep(1)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/zhuogui.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuogui.png')
     rect[0]=rect[0]+315
     do(rect,'点击捉鬼活动')
     time.sleep(5)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/lingquzhuogui.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/lingquzhuogui.png')
     do(rect,'领取捉鬼任务')
     time.sleep(2)
 
-    rect=matcher.match_sub_image(window_capture_all(),'./image/zhuogui/zhuoguirenwu1.png')
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguirenwu1.png')
     do(rect,'点击捉鬼任务1')
     time.sleep(1)
     do(rect,'点击捉鬼任务2')
@@ -214,7 +214,7 @@ def zhuagui():
 
     count=0
     while(True):
-        rect=matcher.match_sub_image(window_capture_all(),'./image/zhandou.png')
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhandou.png')
         if rect:
             count=0
             AddToList('正在捉鬼战斗')
