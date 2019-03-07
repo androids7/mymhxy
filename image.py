@@ -16,7 +16,7 @@ class OpenCVImageMatcher(object):
         #使用matchTemplate对原始灰度图像和图像模板进行匹配
         res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
         #设定阈值 
-        threshold = 0.7 
+        threshold = 0.6
         #res大于70% 
         loc = np.where( res >= threshold)
         locs = zip(*loc[::-1])# 列表
