@@ -30,17 +30,88 @@ def CheckPwd():
         win32api.MessageBox(0,u'口令错误')
         exit()
 
+shimenTh=True
 # 自动任务
 def oneKeyDo(param):
     global frame
+    global shimenTh
     if frame.oneKeyAutoDo.LabelText =='一键师门任务':
         frame.oneKeyAutoDo.LabelText='停止一键自动任务'
         # 检查口令
         # if(CheckPwd() != True):
         #     return False
+        shimenTh=True
+        t = threading.Thread(target=shimen)
+        t.setDaemon(True)
+        t.start()
         
     else:
-        win32api.MessageBox(0,u'操作不允许')
+        shimenTh=False
+        AddToList('停止师门任务')
+        frame.oneKeyAutoDo.LabelText='一键自动任务'
+
+def shimen():
+    global frame
+    while shimenTh:
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/gangbi.png')
+        do(rect,'点击关闭')
+        time.sleep(1)
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/zhicaolinfu.png')
+        if rect:
+            do(rect,'点击师门任务')
+            time.sleep(10)
+
+            rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/shimenuse.png')
+            do(rect,'点击使用灵符')
+            time.sleep(1)
+        
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/gangbi.png')
+        do(rect,'点击关闭')
+        time.sleep(1)
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/xunzudoxi.png')
+        if rect:
+            do(rect,'点击师门任务')
+            time.sleep(10)
+
+            rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/goumai.png')
+            do(rect,'点击购买')
+            time.sleep(4)
+
+            rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/goumai2.png')
+            do(rect,'点击购买')
+            time.sleep(4)
+
+            rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/shangjiao.png')
+            do(rect,'点击上交')
+            time.sleep(2)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/gangbi.png')
+        do(rect,'点击关闭')
+        time.sleep(1)
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/congwu.png')
+        if rect:
+            do(rect,'点击师门任务')
+            time.sleep(10)
+
+            rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/goumai3.png')
+            do(rect,'点击购买')
+            time.sleep(7)
+
+            rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/shangjiao.png')
+            do(rect,'点击上交')
+            time.sleep(2)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/gangbi.png')
+        do(rect,'点击关闭')
+        time.sleep(1)
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/xunluo.png')
+        if rect:
+            do(rect,'点击师门任务')
+            time.sleep(10)
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/wancheng.png')
+        if rect:
+            AddToList('完成师门')
+            break
 
 
 #宝图线程
@@ -71,7 +142,7 @@ def baotu():
     rect1=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/activity_baotu.png')
     rect1[0]=rect1[0]+280
     do(rect1,'点击宝图')
-    time.sleep(10)
+    time.sleep(15)
     #接受宝图
     rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/activity_baotu_start.png')
     do(rect,'接受宝图')
@@ -168,21 +239,37 @@ def zhuagui():
     time.sleep(1)
 
     rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/chungjiangduiwu.png')
-    do(rect,'创建队伍')
-    time.sleep(2)
+    if rect:
+        do(rect,'创建队伍')
+        time.sleep(2)
 
-    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/duiwuxuanze.png')
-    do(rect,'队伍选择')
-    time.sleep(1)
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/duiwuxuanze.png')
+        do(rect,'队伍选择')
+        time.sleep(1)
 
-    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguirenwu.png')
-    do(rect,'选择捉鬼任务')
-    time.sleep(5)
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguirenwu.png')
+        do(rect,'选择捉鬼任务')
+        time.sleep(5)
 
-    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguiqueding.png')
-    do(rect,'确定捉鬼任务')
-    time.sleep(1)
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguiqueding.png')
+        do(rect,'确定捉鬼任务')
+        time.sleep(1)
+    
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/tuichu.png')
+    if rect:
+        time.sleep(1)
 
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/duiwuxuanze.png')
+        do(rect,'队伍选择')
+        time.sleep(1)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguirenwu.png')
+        do(rect,'选择捉鬼任务')
+        time.sleep(5)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguiqueding.png')
+        do(rect,'确定捉鬼任务')
+        time.sleep(1)
     while True:
         rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuzhan.png')
         if rect:
@@ -245,7 +332,7 @@ def zhuagui():
             if rect:
                 rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/jxzhuogui.png')
                 do(rect,'继续捉鬼')
-                time.sleep(3)
+                time.sleep(10)
 
                 rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/lingquzhuogui.png')
                 do(rect,'领取捉鬼任务')
@@ -297,21 +384,130 @@ def zhuagui():
 
                     rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/lingquzhuogui.png')
                     do(rect,'领取捉鬼任务')
-                    time.sleep(2)
+                    time.sleep(3)
 
                     rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguirenwu1.png')
                     do(rect,'点击捉鬼任务1')
-                    time.sleep(1)
+                    time.sleep(2)
                     do(rect,'点击捉鬼任务2')
                     time.sleep(1)
                 else:
                     rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/zhuoguirenwu1.png')
                     do(rect,'点击捉鬼任务1')
-                    time.sleep(1)
+                    time.sleep(3)
                     do(rect,'点击捉鬼任务2')
                     time.sleep(1)
             else:
-                pass
+                rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/shimen/gangbi.png')
+                do(rect,'点击关闭')
+                time.sleep(1)
+
+def yunbiaoTh(param):
+    global frame
+    if frame.yunbiao.LabelText =='自动运镖':
+        frame.yunbiao.LabelText='停止自动运镖'
+        AddToList('自动运镖')
+        # 检查口令
+        # if(CheckPwd() != True):
+        #     return False
+        t = threading.Thread(target=yunbiao)
+        t.setDaemon(True)
+        t.start()
+
+    else:
+        frame.yunbiao.LabelText='自动运镖'
+        AddToList('停止自动运镖')
+
+def yunbiao():
+    # 打开活动页面
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/activity.png')
+    do(rect,'打开活动页面')
+    time.sleep(1)
+
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/richanghuidong.png')
+    do(rect,'选择日常活动')
+    time.sleep(2)
+    # 点击宝图
+    rect1=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/yunbiao/yunbiao.png')
+    rect1[0]=rect1[0]+280
+    do(rect1,'点击运镖')
+    time.sleep(10)
+
+    count=0
+    while True:
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/yunbiao/start.png')
+        if rect:
+            count+=1
+            do(rect,'开始运镖')
+            time.sleep(4)
+            rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/yunbiao/ok.png')
+            do(rect,'确定')
+            time.sleep(2)
+
+        else:
+            AddToList('运镖中')
+            time.sleep(5)
+        if count>=3:
+            break
+
+
+def sanjieTh(param):
+    global frame
+    if frame.sanjie.LabelText =='自动三界奇缘':
+        frame.sanjie.LabelText='停止自动三界奇缘'
+        AddToList('自动三界奇缘')
+        # 检查口令
+        # if(CheckPwd() != True):
+        #     return False
+        t = threading.Thread(target=sanjie)
+        t.setDaemon(True)
+        t.start()
+
+    else:
+        frame.sanjie.LabelText='自动三界奇缘'
+        AddToList('停止自动三界奇缘')
+
+def sanjie():
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/activity.png')
+    do(rect,'打开活动页面')
+    time.sleep(1)
+
+    rect1=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/zhuogui/richanghuidong.png')
+    do(rect1,'选择日常活动')
+    time.sleep(1)
+
+    rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/sanjie/sanjie.png')
+    if rect:
+        rect[0]=rect[0]+280
+        do(rect,'点击三界奇缘')
+        time.sleep(5)
+    else:
+        autopy.mouse.smooth_move(rect1[0]+200,rect1[1])
+        time.sleep(1)
+        while True:
+            win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL,0,0,-200)
+            rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/sanjie/sanjie.png')
+            if rect:
+                rect[0]=rect[0]+280
+                do(rect,'点击三界奇缘')
+                time.sleep(5)
+                break
+    while True:
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/sanjie/wancheng.png')
+        if rect:
+            do(rect,'完成三界奇缘')
+            time.sleep(2)
+
+            rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/sanjie/gbi.png')
+            do(rect,'关闭三界奇缘')
+            time.sleep(2)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/sanjie/bi.png')
+        rect[0]=rect[0]+200
+        rect[1]=rect[1]+200
+        do(rect,'点击三界奇缘')
+        time.sleep(2)
+
 
 
 
@@ -331,10 +527,14 @@ class Frame(wx.Frame):
         self.oneKeyAutoDo = wx.Button(panel,wx.ID_ANY,label=u"一键师门任务",pos=(10,55),size=(110,35))
         self.autoZhuaGui  = wx.Button(panel,wx.ID_ANY,label=u"自动带队抓鬼",pos=(140,55),size=(110,35))
         self.autoDaTu  = wx.Button(panel,wx.ID_ANY,label=u"自动宝图",pos=(10,100),size=(110,35))
+        self.yunbiao  = wx.Button(panel,wx.ID_ANY,label=u"自动运镖",pos=(140,100),size=(110,35))
+        self.sanjie  = wx.Button(panel,wx.ID_ANY,label=u"自动三界奇缘",pos=(10,145),size=(110,35))
         # 控件事件
         self.Bind(wx.EVT_BUTTON, oneKeyDo, self.oneKeyAutoDo)
         self.Bind(wx.EVT_BUTTON, zhuaGuiTh, self.autoZhuaGui)
         self.Bind(wx.EVT_BUTTON, BaoTuTh, self.autoDaTu)
+        self.Bind(wx.EVT_BUTTON, yunbiaoTh, self.yunbiao)
+        self.Bind(wx.EVT_BUTTON, sanjieTh, self.sanjie)
 
         self.listbox1 = wx.ListBox(panel,wx.ID_ANY,(270,55),(200,300),[],wx.LB_SINGLE)
 
