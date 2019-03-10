@@ -508,7 +508,65 @@ def sanjie():
         do(rect,'点击三界奇缘')
         time.sleep(2)
 
+def jinyanTh(param):
+    global frame
+    global isjinyan
+    if frame.jinyan.LabelText =='自动经验':
+        frame.jinyan.LabelText='停止自动经验'
+        AddToList('自动经验')
+        # 检查口令
+        # if(CheckPwd() != True):
+        #     return False
+        isjinyan=True
+        t = threading.Thread(target=jinyan)
+        t.setDaemon(True)
+        t.start()
 
+    else:
+        frame.jinyan.LabelText='自动经验'
+        AddToList('停止自动经验')
+        isjinyan=False
+
+isjinyan=True
+def jinyan():
+    while isjinyan:
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/jinyan/zhandou.png')
+        do(rect,'经验环-战斗')
+        time.sleep(10)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/jinyan/startzhandou.png')
+        do(rect,'经验环-开始战斗')
+        time.sleep(2)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/jinyan/startzhandou1.png')
+        do(rect,'经验环-开始战斗')
+        time.sleep(2)
+        
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/jinyan/xunren.png')
+        do(rect,'经验环-寻人')
+        time.sleep(5)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/jinyan/goumai.png')
+        do(rect,'经验环-购买')
+        time.sleep(10)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/jinyan/shop.png')
+        if rect:
+            rect[1]=rect[1]+250
+            do(rect,'经验环-购买中')
+            time.sleep(1)
+
+            rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/jinyan/goumai1.png')
+            do(rect,'经验环-购买1')
+            time.sleep(10)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/jinyan/xunwu.png')
+        do(rect,'经验环-寻物')
+        time.sleep(2)
+
+        rect=matcher.match_sub_image(startx,starty,window_capture_all(),'./image/jinyan/shangjiao.png')
+        do(rect,'经验环-上交')
+        time.sleep(10)
 
 
 class Frame(wx.Frame):
@@ -529,12 +587,14 @@ class Frame(wx.Frame):
         self.autoDaTu  = wx.Button(panel,wx.ID_ANY,label=u"自动宝图",pos=(10,100),size=(110,35))
         self.yunbiao  = wx.Button(panel,wx.ID_ANY,label=u"自动运镖",pos=(140,100),size=(110,35))
         self.sanjie  = wx.Button(panel,wx.ID_ANY,label=u"自动三界奇缘",pos=(10,145),size=(110,35))
+        self.jinyan  = wx.Button(panel,wx.ID_ANY,label=u"自动经验",pos=(140,145),size=(110,35))
         # 控件事件
         self.Bind(wx.EVT_BUTTON, oneKeyDo, self.oneKeyAutoDo)
         self.Bind(wx.EVT_BUTTON, zhuaGuiTh, self.autoZhuaGui)
         self.Bind(wx.EVT_BUTTON, BaoTuTh, self.autoDaTu)
         self.Bind(wx.EVT_BUTTON, yunbiaoTh, self.yunbiao)
         self.Bind(wx.EVT_BUTTON, sanjieTh, self.sanjie)
+        self.Bind(wx.EVT_BUTTON, jinyanTh, self.jinyan)
 
         self.listbox1 = wx.ListBox(panel,wx.ID_ANY,(270,55),(200,300),[],wx.LB_SINGLE)
 
