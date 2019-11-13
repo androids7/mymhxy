@@ -1,6 +1,9 @@
 # mymhxy
 网易 梦幻西游手游
 
+### 免责声明
+本项目所有内容,仅供学习和研究使用,请勿使用项目的技术手段用于非法用途,任何人造成的任何负面影响,与本人无关。
+
 ### 资料
 * https://www.oschina.net/code/piece_full?code=46176piece=65625#65625 
 * https://blog.csdn.net/zydarChen/article/details/77587967
